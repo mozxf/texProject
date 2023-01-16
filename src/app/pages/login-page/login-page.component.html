@@ -1,0 +1,27 @@
+<section
+  class="flex w-full h-full bg-[url('/assets/texShippingBackground.png')] justify-center items-center"
+>
+  <form
+    class="flex flex-col items-center rounded-lg bg-neutral-900 w-1/4 h-fit py-5 px-10 gap-5"
+  >
+    <h1
+      class="login text-center text-white font-montserrat font-medium text-5xl"
+    >
+      Login
+    </h1>
+    <div class="inputGroup">
+      <label class="text-white" for="email">Email</label>
+      <input id="email" name="email" type="email" />
+    </div>
+
+    <div class="inputGroup">
+      <label class="text-white" for="password">Password</label>
+      <input id="password" name="password" type="password" />
+    </div>
+    <div class="lostPasswordAndSignIn">
+      <a routerLink="/signup">Sign-Up</a>
+      <a routerLink="/forgotPassword">Forgot your password?</a>
+    </div>
+    <button class="button">LOGIN</button>
+  </form>
+</section>

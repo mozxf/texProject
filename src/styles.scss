@@ -1,0 +1,24 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  margin: 0;
+  padding: 0;
+  border: none;
+  box-sizing: border-box;
+  text-decoration: none;
+  list-style: none;
+}
+
+.inputGroup {
+  @apply flex flex-col font-roboto font-normal w-full gap-1;
+
+  label {
+    @apply text-xl;
+  }
+
+  input {
+    @apply rounded p-3;
+  }
+}
