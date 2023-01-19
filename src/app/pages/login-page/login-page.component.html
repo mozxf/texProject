@@ -3,25 +3,32 @@
 >
   <form
     class="flex flex-col items-center rounded-lg bg-neutral-900 w-1/4 h-fit py-5 px-10 gap-5"
+    [formGroup]="form"
+    (ngSubmit)="handleSubmit()"
   >
     <h1
       class="login text-center text-white font-montserrat font-medium text-5xl"
     >
       Login
     </h1>
-    <div class="inputGroup">
-      <label class="text-white" for="email">Email</label>
-      <input id="email" name="email" type="email" />
-    </div>
+    <app-input
+      [inputInfo]="{ name: 'email', type: 'email', label: 'Email' }"
+      [control]="$any(form.get('email'))"
+    ></app-input>
+    <app-input
+      [inputInfo]="{ name: 'password', type: 'password', label: 'Password' }"
+      [control]="$any(form.get('password'))"
+    ></app-input>
 
-    <div class="inputGroup">
-      <label class="text-white" for="password">Password</label>
-      <input id="password" name="password" type="password" />
-    </div>
     <div class="lostPasswordAndSignIn">
-      <a routerLink="/signup">Sign-Up</a>
-      <a routerLink="/forgotPassword">Forgot your password?</a>
+      <a href="/signup">Sign-Up</a>
+      <a href="/forgotPassword">Forgot your password?</a>
     </div>
-    <button class="button">LOGIN</button>
+    <button
+      [disabled]="!form.value.email || !form.value.password"
+      class="button"
+    >
+      LOGIN
+    </button>
   </form>
 </section>

@@ -1,0 +1,11 @@
+<div class="inputGroup {{ inputInfo.class }}">
+  <label class="text-white" for="email">{{ inputInfo.label }}</label>
+  <input
+    #input
+    id="{{ inputInfo.name }}"
+    name="{{ inputInfo.name }}"
+    [formControl]="control"
+    type="{{ inputInfo.type }}"
+    (change)="handleBlur(input.value)"
+  />
+</div>

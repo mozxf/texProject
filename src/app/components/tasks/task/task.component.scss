@@ -1,0 +1,33 @@
+.taskContainer {
+  @apply flex gap-5 justify-between rounded-lg border border-gray-300 bg-white px-7 py-5 font-roboto;
+  @apply text-black w-96 max-w-md relative;
+}
+
+.taskContainer::before {
+  content: "";
+  position: absolute;
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
+  top: 0;
+  left: 0;
+  display: block;
+  height: 100%;
+  width: 10px;
+}
+:host[priority="Important"] {
+  .taskContainer::before {
+    @apply bg-red-700;
+  }
+}
+
+:host[priority="Normal"] {
+  .taskContainer::before {
+    @apply bg-yellow-500;
+  }
+}
+
+:host[priority="Low"] {
+  .taskContainer::before {
+    @apply bg-lime-600;
+  }
+}
