@@ -14,19 +14,19 @@
   height: 100%;
   width: 10px;
 }
-:host[priority="Important"] {
+:host[ng-reflect-priority="high"] {
   .taskContainer::before {
     @apply bg-red-700;
   }
 }
 
-:host[priority="Normal"] {
+:host[ng-reflect-priority="normal"] {
   .taskContainer::before {
     @apply bg-yellow-500;
   }
 }
 
-:host[priority="Low"] {
+:host[ng-reflect-priority="low"] {
   .taskContainer::before {
     @apply bg-lime-600;
   }

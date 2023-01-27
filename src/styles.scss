@@ -18,7 +18,18 @@
     @apply text-xl;
   }
 
-  input {
+  input,
+  select {
     @apply rounded p-3;
   }
+}
+
+.button {
+  @apply text-white bg-neutral-900 border border-solid border-white rounded font-montserrat font-medium text-xl px-8 py-1 my-5 transition-colors;
+  @apply hover:bg-black;
+}
+
+button[disabled] {
+  @apply bg-neutral-700 cursor-auto;
+  @apply hover:bg-neutral-700;
 }

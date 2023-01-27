@@ -1,12 +1,16 @@
 <aside class="h-full bg-neutral-900">
   <div
-    class="userDataContainer flex justify-between p-6 items-center mb-6 relative"
+    class="userDataContainer flex gap-5 justify-between p-6 items-center mb-6 relative"
   >
     <div class="font-montserrat font-medium flex flex-col">
-      <h2 class="text-stone-100 text-2xl">Fernando</h2>
-      <span class="text-gray-300 text-base">Associate Frontend Developer</span>
+      <h2 class="text-stone-100 text-2xl">{{ userInfo?.name }}</h2>
+      <span class="text-gray-300 text-base">{{ userInfo?.position }}</span>
     </div>
-    <img src="/assets/userPhoto.png" alt="" />
+    <img
+      class="w-20 h-20 rounded-full object-cover"
+      [src]="userInfo?.profilePic"
+      alt=""
+    />
   </div>
 
   <ul class="pt-6 font-roboto font-normal text-2xl text-gray-300">

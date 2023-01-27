@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AuthService } from 'src/app/services/authService/auth.service';
+import { AuthService } from 'src/app/auth-module/services/authService/auth.service';
 
 @Component({
   selector: 'app-login-page',

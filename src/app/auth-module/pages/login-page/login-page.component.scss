@@ -1,0 +1,12 @@
+.login::after {
+  content: "";
+  display: block;
+  width: 400px;
+  height: 1.5px;
+  background-color: #1e1e1e;
+  margin: 20px 0;
+}
+
+.lostPasswordAndSignIn {
+  @apply flex w-full justify-between underline font-montserrat text-lg text-white;
+}
