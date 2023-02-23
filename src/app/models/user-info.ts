@@ -6,7 +6,7 @@ export interface IUserInfo {
   team: string;
   salary: number;
   email: string;
-  password: string;
+  password?: string;
   phoneNumber: string;
   profilePic?: string;
 }
@@ -20,6 +20,11 @@ export interface IUserPublicInfo {
   phoneNumber: string;
   profilePic: string;
 }
+
+export type TUserPrivateInfo = {
+  cpf: string;
+  salary: number;
+};
 
 /*
 name: [null],

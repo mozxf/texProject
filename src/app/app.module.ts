@@ -1,3 +1,4 @@
+import { NgxMaskModule } from 'ngx-mask';
 import { SharedModule } from './shared/shared.module';
 import { AuthService } from 'src/app/auth-module/services/authService/auth.service';
 import { environment } from './../environments/environment';

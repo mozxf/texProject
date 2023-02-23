@@ -10,3 +10,6 @@
 .lostPasswordAndSignIn {
   @apply flex w-full justify-between underline font-montserrat text-lg text-white;
 }
+.ng-invalid:not(form) {
+  border-left: 5px solid #a94442; /* red */
+}

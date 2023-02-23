@@ -7,6 +7,13 @@
     name="{{ inputInfo.name }}"
     [formControl]="control"
     type="{{ inputInfo.type }}"
-    (change)="handleBlur(input.value)"
+    [mask]="mask"
+    [prefix]="prefix"
+    [readOnly]="isReadonly"
   />
+  <span
+    *ngIf="error?.shouldDisplay"
+    class="font-montserrat text-base text-red-300 font-medium"
+    >{{ error.message }}</span
+  >
 </div>

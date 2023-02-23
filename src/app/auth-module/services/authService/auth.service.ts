@@ -1,3 +1,5 @@
+import { EmployeesService } from './../../../dashboard/services/emloyees/employees.service';
+import { TasksService } from './../../../dashboard/services/tasks/tasks.service';
 import { IUserInfo, IUserPublicInfo } from '../../../models/user-info';
 import { getLocaleMonthNames } from '@angular/common';
 import { Injectable, Optional, SkipSelf } from '@angular/core';
@@ -11,76 +13,65 @@ import {
   query,
   where,
   setDoc,
-  Timestamp,
   getDoc,
   getDocs,
   DocumentReference,
   DocumentData,
 } from 'firebase/firestore';
 import { Storage } from '@angular/fire/storage';
-import { firstValueFrom, Observable, Subject } from 'rxjs';
+import {
+  concat,
+  firstValueFrom,
+  map,
+  Observable,
+  Subject,
+  switchMap,
+} from 'rxjs';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
+import { ITeam } from 'src/app/models/team';
 
 @Injectable()
 export class AuthService {
-  user?: IUserPublicInfo;
-
   constructor(
     private fs: Firestore,
     private fireAuth: AngularFireAuth,
-    private storage: Storage
-  ) {
-    this.getUserPublicInfo().then((user) => {
-      this.user = user;
-    });
-  }
+    private storage: Storage,
+    private tasksService: TasksService,
+    private employeesService: EmployeesService
+  ) {}
 
-  async getUserDocReference() {
-    const userUid = (await firstValueFrom(this.fireAuth.user))?.uid;
-    const employeesRef = collection(this.fs, 'employees');
-    const userRef = doc(employeesRef, userUid);
-    return userRef;
-  }
-
-  login(email: string, password: string) {
-    this.fireAuth.signInWithEmailAndPassword(email, password);
-  }
-
-  getTeams() {
-    const teamsRef = collection(this.fs, 'teams');
-    return collectionData(teamsRef) as Observable<any>;
-  }
-
-  async getTeamId(team: string) {
-    const teamRef = collection(this.fs, 'teams');
-    const teamQuery = query(teamRef, where('name', '==', team));
-    const teamId = (await getDocs(teamQuery)).docs[0].id;
-    return teamId;
+  async login(email: string, password: string) {
+    return await this.fireAuth
+      .signInWithEmailAndPassword(email, password)
+      .catch((err) => alert(err));
   }
 
   async createUser(user: IUserInfo, profilePicFile: File) {
     const { email, password } = user;
-    await this.fireAuth
-      .createUserWithEmailAndPassword(email, password)
-      .then(async () => {
-        await this.createUserDoc(user);
-        await this.uploadPhoto(profilePicFile);
-      });
+    await this.fireAuth.createUserWithEmailAndPassword(
+      email,
+      password as string
+    );
+    await this.createUserDoc(user);
+    await this.uploadPhoto(profilePicFile);
   }
 
   async createUserDoc(user: IUserInfo) {
     const userAuth = await firstValueFrom(this.fireAuth.user);
     const userUid = userAuth?.uid as string;
     const employeesRef = collection(this.fs, 'employees');
-    const teamId = await this.getTeamId(user.team);
+    const teamId = await this.employeesService.getTeamId(user.team);
 
     const userRef = doc(employeesRef, userUid);
 
     const personalInfoRef = collection(userRef, 'personalInfo');
     this.createUserPersonalInfo(user.cpf, user.salary, personalInfoRef);
 
-    const tasksRef = collection(userRef, 'tasks');
-    this.createUserTasks(tasksRef);
+    this.tasksService.createUserTasks(userRef, {
+      description: 'create new tasks',
+      deadline: new Date('10/02/2023'),
+      priority: 'high',
+    });
 
     const userpublicInfo = {
       name: user.name,
@@ -90,68 +81,24 @@ export class AuthService {
       team: user.team,
       teamId,
     };
+    const userDoc = await setDoc(userRef, userpublicInfo);
 
-    return setDoc(userRef, userpublicInfo);
+    return userDoc;
   }
 
   async uploadPhoto(photo: File) {
     const userUid = (await firstValueFrom(this.fireAuth.user))?.uid;
     const storageRef = ref(this.storage, `userPics/${userUid}`);
-    uploadBytes(storageRef, photo);
+    await uploadBytes(storageRef, photo);
   }
 
-  createUserPersonalInfo(
+  async createUserPersonalInfo(
     cpf: string,
     salary: number,
     personalInfoRef: CollectionReference
   ) {
-    return addDoc(personalInfoRef, { cpf, salary });
-  }
-
-  createUserTasks(tasksReference: CollectionReference) {
-    const userTask = doc(tasksReference);
-    const taskId = userTask.id;
-
-    return setDoc(userTask, {
-      id: taskId,
-      description: 'Create new tasks',
-      deadline: Timestamp.fromDate(new Date('02-10-2023')),
-      isCompleted: false,
-      priority: 'high',
-    });
-  }
-
-  async getUserPublicInfo() {
-    const userUid = (await firstValueFrom(this.fireAuth.user))?.uid;
-    const employeesRef = collection(this.fs, 'employees');
-    const userRef = doc(employeesRef, userUid);
-    const profilePicUrl = await getDownloadURL(
-      ref(this.storage, `userPics/${userUid}`)
-    );
-    const userPublicInfo = (await getDoc(userRef)).data() as IUserPublicInfo;
-
-    return {
-      ...userPublicInfo,
-      profilePic: profilePicUrl,
-    };
-    // const querySnapshot = await getDocs(queryTeams);
-    // querySnapshot.forEach(async (team) => {
-    //   const teamDoc = doc(this.fs, 'teams', team.id);
-    //   const employeesRef = collection(teamDoc, 'employees');
-    //   const userRef = doc(employeesRef, userUid);
-    //   this.firebaseUserRef.next(userRef);
-    //   const userDoc = await getDoc(userRef);
-    //   if (userDoc.exists()) {
-    //     console.log(userDoc.data());
-    //     const profilePicUrl = await getDownloadURL(
-    //       ref(this.storage, `userPics/${userUid}`)
-    //     );
-    //     const userPublicInfo = userDoc.data() as IUserPublicInfo;
-    //     this.user.next({
-    //       ...userPublicInfo,
-    //       profilePic: profilePicUrl,
-    //     });
-    //   }
-    // });
+    const uid = (await firstValueFrom(this.fireAuth.user))?.uid;
+    const personalInfoDoc = doc(personalInfoRef, uid);
+    return setDoc(personalInfoDoc, { cpf, salary });
   }
 }

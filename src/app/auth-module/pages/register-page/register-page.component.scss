@@ -14,3 +14,9 @@
   width: 500px;
   background: #1e1e1e;
 }
+
+.team {
+  .ng-touched.ng-invalid {
+    @apply border-2 border-solid border-red-500;
+  }
+}

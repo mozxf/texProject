@@ -2,6 +2,7 @@
   class="flex w-full h-full bg-[url('/assets/texShippingBackground.png')] justify-center items-center"
 >
   <form
+    #loginForm="ngForm"
     class="flex flex-col items-center rounded-lg bg-neutral-900 w-1/4 h-fit py-5 px-10 gap-5"
     [formGroup]="form"
     (ngSubmit)="handleSubmit()"
@@ -14,10 +15,20 @@
     <app-input
       [inputInfo]="{ name: 'email', type: 'email', label: 'Email' }"
       [control]="$any(form.get('email'))"
+      [error]="{
+        message: 'Invalid email',
+        shouldDisplay: form.get('email')?.invalid && form.get('email')?.touched
+      }"
     ></app-input>
+
     <app-input
       [inputInfo]="{ name: 'password', type: 'password', label: 'Password' }"
       [control]="$any(form.get('password'))"
+      [error]="{
+        message: 'Invalid password, min 6 characters',
+        shouldDisplay:
+          form.get('password')?.invalid && form.get('password')?.touched
+      }"
     ></app-input>
 
     <div class="lostPasswordAndSignIn">

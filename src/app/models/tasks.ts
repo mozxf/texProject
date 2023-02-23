@@ -7,3 +7,9 @@ export interface ITask {
   isCompleted: boolean;
   priority: 'high' | 'normal' | 'low';
 }
+
+export interface ITaskDTO {
+  description: string;
+  deadline: Date;
+  priority: 'high' | 'normal' | 'low';
+}

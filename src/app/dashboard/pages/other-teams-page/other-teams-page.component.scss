@@ -1,0 +1,18 @@
+.teamWrapper::after {
+  content: "";
+  display: block;
+  width: 60%;
+  height: 2px;
+  @apply bg-gray-300;
+}
+
+.infoContainer {
+  @apply flex flex-col w-full justify-center text-center;
+
+  h2 {
+    @apply text-stone-100  text-2xl font-medium;
+  }
+  span {
+    @apply text-gray-300 text-xl font-normal break-words;
+  }
+}

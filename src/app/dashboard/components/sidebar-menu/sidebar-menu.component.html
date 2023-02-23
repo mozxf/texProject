@@ -13,18 +13,19 @@
     />
   </div>
 
-  <ul class="pt-6 font-roboto font-normal text-2xl text-gray-300">
-    <li class="flex w-full px-14 py-6 items-center" routerLinkActive="active">
-      <a class="w-full h-full" routerLink="/">Tasks</a>
+  <ul class="sidebar">
+    <li routerLinkActive="active">
+      <a routerLink="tasks">Tasks</a>
     </li>
-    <li class="flex w-full px-14 py-6 items-center" routerLinkActive="active">
-      <a class="w-full h-full" routerLink="/myTeam">My Team</a>
+    <li routerLinkActive="active">
+      <a routerLink="myTeam">My Team</a>
     </li>
-    <li class="flex w-full px-14 py-6 items-center" routerLinkActive="active">
-      <a class="w-full h-full" routerLink="/otherTeams">OtherTeams</a>
+    <li routerLinkActive="active">
+      <a routerLink="otherTeams">Other Teams</a>
     </li>
-    <li class="flex w-full px-14 py-6 items-center" routerLinkActive="active">
-      <a class="w-full h-full" routerLink="/profile">Profile</a>
+    <li routerLinkActive="active">
+      <a routerLink="profile">Profile</a>
     </li>
+    <li (click)="logout()" routerLinkActive="active">Logout</li>
   </ul>
 </aside>

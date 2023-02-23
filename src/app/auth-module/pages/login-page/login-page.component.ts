@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/auth-module/services/authService/auth.service';
 
@@ -17,25 +17,21 @@ export class LoginPageComponent {
     private router: Router
   ) {
     this.form = formBuilder.group({
-      email: [null],
-      password: [null],
+      email: [null, [Validators.required, Validators.email]],
+      password: [null, [Validators.required, Validators.minLength(6)]],
     });
-
-    console.log(this.form);
   }
 
-  handleSubmit() {
+  async handleSubmit() {
     const { email, password } = this.form.value;
-    try {
-      this.authService.login(email, password);
-      this.router.navigate(['/dashboard']);
-    } catch (err) {
-      alert(err);
+    const isFormValid = this.form.valid;
+    if (isFormValid) {
+      try {
+        await this.authService.login(email, password);
+        this.router.navigate(['/dashboard']);
+      } catch (err) {
+        alert(err);
+      }
     }
   }
 }
-
-type TInput = {
-  email: string;
-  password: string;
-};

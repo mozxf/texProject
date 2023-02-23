@@ -1,5 +1,5 @@
 import { FormControl } from '@angular/forms';
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { IInput } from 'src/app/models/input';
 
 @Component({
@@ -9,12 +9,12 @@ import { IInput } from 'src/app/models/input';
 })
 export class InputComponent {
   @Input() inputInfo!: IInput;
-  // @Output() fieldInfo: any = new EventEmitter<string>();
-  value: string = '';
   @Input() control!: FormControl;
-
-  handleBlur(data: string) {
-    this.value = data;
-    // this.fieldInfo.emit(data);
-  }
+  @Input() isReadonly?: boolean = false;
+  @Input() error: { message: string; shouldDisplay: boolean | undefined } = {
+    message: '',
+    shouldDisplay: false,
+  };
+  @Input() mask: string = '';
+  @Input() prefix: string = '';
 }

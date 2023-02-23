@@ -4,46 +4,36 @@
     [formGroup]="form"
     (ngSubmit)="handleSubmit()"
   >
-    <h1 class="title font-roboto text-stone-100 text-5xl mb-5">Sign-Up</h1>
+    <h1 class="title font-roboto text-stone-100 text-5xl mb-5">Profile</h1>
     <div class="flex w-full gap-44">
       <div class="flex flex-col w-1/2 gap-5">
         <app-input
           [inputInfo]="{ label: 'Name', type: 'text', name: 'name' }"
           [control]="$any(form.get('name'))"
-          [error]="{
-            message: 'min 3 characters',
-            shouldDisplay: shouldDisplayError('name')
-          }"
+          [isReadonly]="!editMode"
         ></app-input>
         <app-input
           [inputInfo]="{ label: 'CPF', type: 'text', name: 'cpf' }"
           [control]="$any(form.get('cpf'))"
-          [error]="{
-            message: 'Invalid cpf',
-            shouldDisplay: shouldDisplayError('cpf')
-          }"
           [mask]="'000.000.000-00'"
+          [isReadonly]="!editMode"
         ></app-input>
         <app-input
           [inputInfo]="{ label: 'Position', type: 'text', name: 'position' }"
           [control]="$any(form.get('position'))"
-          [error]="{
-            message: 'Position is required',
-            shouldDisplay: shouldDisplayError('position')
-          }"
+          [isReadonly]="!editMode"
         ></app-input>
         <div class="inputGroup text-white">
           <label>Team</label>
-          <select class="team text-neutral-900 w-1/2" formControlName="team">
-            <option *ngFor="let team of teams$ | async" [value]="team.name">
+          <select class="text-neutral-900 w-1/2" formControlName="team">
+            <option
+              *ngFor="let team of teams$ | async"
+              [value]="team.name"
+              [disabled]="!editMode"
+            >
               {{ team.name }}
             </option>
           </select>
-          <span
-            class="font-montserrat text-base text-red-300 font-medium;"
-            *ngIf="shouldDisplayError('team')"
-            >Team is required</span
-          >
         </div>
         <app-input
           [inputInfo]="{
@@ -53,17 +43,14 @@
             class: 'w-1/2'
           }"
           [control]="$any(form.get('salary'))"
-          [error]="{
-            message: 'Salary is required, please insert it',
-            shouldDisplay: shouldDisplayError('salary')
-          }"
           [prefix]="'R$'"
           [mask]="'9999999999'"
+          [isReadonly]="!editMode"
         ></app-input>
       </div>
       <div class="flex flex-col items-center w-1/2 h-full gap-5">
         <div
-          class="flex w-32 h-32 rounded-full cursor-pointer bg-gray-300 relative justify-center items-center border-2 border-gray-300 hover:border-dashed hover:border-gray-700"
+          class="flex w-32 h-32 rounded-full cursor-pointer bg-gray-300 relative justify-center items-center border-2 border-gray-300"
         >
           <label
             class="image flex justify-center items-center w-full h-full rounded-full relative bg-gray-300 z-20 cursor-pointer"
@@ -72,17 +59,19 @@
             <img *ngIf="!profilePicUrl" src="assets/cameraSvg.svg" />
             <img
               class="w-full h-full rounded-full object-cover"
+              [style.cursor]="editMode ? 'pointer' : 'default'"
               *ngIf="profilePicUrl"
               [src]="profilePicUrl"
               for="profilePic"
             />
             <input
-              (change)="updateProfilePic($event)"
+              *ngIf="editMode"
               class="hidden"
               type="file"
               accept="image/*"
               name="profilePic"
               id="profilePic"
+              (change)="updateProfilePic($event)"
             />
           </label>
         </div>
@@ -93,23 +82,18 @@
             name: 'email'
           }"
           [control]="$any(form.get('email'))"
-          [error]="{
-            message: 'Email not valid',
-            shouldDisplay: shouldDisplayError('email')
-          }"
+          [isReadonly]="!editMode"
         ></app-input>
-        <app-input
-          [inputInfo]="{
-            label: 'Password',
-            type: 'password',
-            name: 'password'
-          }"
-          [control]="$any(form.get('password'))"
-          [error]="{
-            message: 'Password min length is 6 characters',
-            shouldDisplay: shouldDisplayError('password')
-          }"
-        ></app-input>
+        <div class="flex flex-col font-roboto font-normal w-full">
+          <span class="text-xl text-white">Password</span>
+          <button
+            class="button"
+            [disabled]="!editMode || resetPasswordEmailSent"
+            (click)="handleResetPassword()"
+          >
+            {{ resetPasswordEmailSent ? "EMAIL SENT" : "RESET PASSWORD" }}
+          </button>
+        </div>
         <app-input
           [inputInfo]="{
             label: 'Phone number',
@@ -118,13 +102,16 @@
           }"
           [mask]="'(00) 00000-0000'"
           [control]="$any(form.get('phoneNumber'))"
-          [error]="{
-            message: 'Phone number is required',
-            shouldDisplay: shouldDisplayError('phoneNumber')
-          }"
+          [isReadonly]="!editMode"
         ></app-input>
       </div>
     </div>
-    <button [disabled]="!form.valid" class="button w-fit">SIGN-UP</button>
+    <button
+      [disabled]="!form.valid"
+      class="button w-fit"
+      (click)="(editMode ? handleSubmit : handleEditMode)"
+    >
+      {{ editMode ? "SUBMIT" : "EDIT PROFILE" }}
+    </button>
   </form>
 </section>

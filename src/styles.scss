@@ -33,3 +33,20 @@ button[disabled] {
   @apply bg-neutral-700 cursor-auto;
   @apply hover:bg-neutral-700;
 }
+
+.teamCard {
+  animation: displayAnimation 0.7s forwards;
+}
+
+.taskContainer {
+  animation: displayAnimation 0.7s forwards;
+}
+
+@keyframes displayAnimation {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

@@ -1,0 +1,10 @@
+.infoContainer {
+  @apply flex flex-col w-full justify-center text-center;
+
+  h2 {
+    @apply text-stone-100  text-2xl font-medium;
+  }
+  span {
+    @apply text-gray-300 text-xl font-normal break-words;
+  }
+}

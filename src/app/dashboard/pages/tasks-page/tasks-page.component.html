@@ -2,24 +2,52 @@
   <section
     class="flex flex-col gap-16 w-full h-full bg-stone-100 overflow-scroll px-28 py-14"
   >
-    <h1 class="font-montserrat font-medium text-7xl">Tasks</h1>
-    <div class="flex flex-col">
-      <h2 class="font-roboto font-medium text-5xl py-12">Pending</h2>
-      <ul class="flex gap-5 flex-wrap">
-        <app-task
-          *ngFor="let task of incompletedTasks"
-          [task]="task"
-        ></app-task>
-        <!-- <app-task priority="Normal" (checked)="handleEvent($event)"></app-task>
-        <app-task priority="Low" (checked)="handleEvent($event)"></app-task> -->
+    <app-create-task-modal
+      [shouldAppear]="showCreateTaskModal"
+      (closedModal)="handleCreateTaskModal($event)"
+    ></app-create-task-modal>
+    <div class="flex justify-between">
+      <h1 class="font-montserrat font-medium text-7xl">Tasks</h1>
+      <div class="flex gap-5">
+        <button (click)="handleCreateTaskModal()" class="button">
+          {{ showCreateTaskModal ? "Close" : "New Task" }}
+        </button>
+        <button class="button" (click)="handleDeleteTasks()">
+          {{ showDeleteTasksLayer ? "Stop deleting" : "Delete tasks" }}
+        </button>
+      </div>
+    </div>
+    <div class="tasks flex items-center flex-col">
+      <h2 class="w-full font-roboto font-medium text-5xl py-12">Pending</h2>
+      <ul #incompleteList class="grid gap-5 grid-cols-3 w-full">
+        <ng-container *ngFor="let task of tasks$ | async">
+          <app-task
+            *ngIf="!task.isCompleted"
+            class="{{ task.priority }}"
+            [task]="task"
+            [shouldDelete]="showDeleteTasksLayer"
+          ></app-task>
+        </ng-container>
+
+        <span *ngIf="!incompleteTasksExists" class="noTask"
+          >No tasks pending</span
+        >
       </ul>
     </div>
-    <div class="flex flex-col">
-      <h2 class="font-roboto font-medium text-5xl py-12">Completed</h2>
-      <ul class="flex gap-5 flex-wrap">
-        <app-task *ngFor="let task of completedTasks" [task]="task"></app-task>
-        <!-- <app-task priority="Normal" (checked)="handleEvent($event)"></app-task>
-        <app-task priority="Low" (checked)="handleEvent($event)"></app-task> -->
+    <div class="flex flex-col items-center">
+      <h2 class="font-roboto w-full font-medium text-5xl py-12">Completed</h2>
+      <ul #completeList class="grid w-full grid-cols-3 gap-5" id="firstList">
+        <ng-container *ngFor="let task of tasks$ | async">
+          <app-task
+            *ngIf="task.isCompleted"
+            class="{{ task.priority }}"
+            [task]="task"
+            [shouldDelete]="showDeleteTasksLayer"
+          ></app-task>
+        </ng-container>
+        <span *ngIf="!completedTasksExists" class="noTask"
+          >No tasks completed</span
+        >
       </ul>
     </div>
   </section>

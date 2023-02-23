@@ -1,0 +1,29 @@
+<form
+  [formGroup]="form"
+  (ngSubmit)="handleSubmit()"
+  class="flex flex-col gap-5 justify-between rounded-lg border bg-neutral-900 px-7 py-5 font-roboto; w-96 max-w-md text-white fixed z-30 top-40"
+  *ngIf="shouldAppear"
+>
+  <div class="inputGroup">
+    <label for="description">Description</label>
+    <input
+      formControlName="description"
+      class="border border-solid border-neutral-200"
+      id="description"
+      type="text"
+    />
+  </div>
+  <div class="inputGroup">
+    <label for="">Deadline</label>
+    <input formControlName="deadline" type="date" />
+  </div>
+  <div class="inputGroup">
+    <label for="">Priority</label>
+    <select formControlName="priority">
+      <option value="high">High</option>
+      <option value="normal">Normal</option>
+      <option value="low">Low</option>
+    </select>
+  </div>
+  <button class="button bg-stone-100 text-neutral-900">Create</button>
+</form>

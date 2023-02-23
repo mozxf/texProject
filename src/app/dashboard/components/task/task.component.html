@@ -1,15 +1,29 @@
-<form *ngIf="task" [formGroup]="form" class="taskContainer">
-  <div class="flex flex-col gap-5">
+<form
+  *ngIf="task"
+  [formGroup]="form"
+  class="taskContainer relative"
+  [attr.priority]="task.priority"
+>
+  <div
+    *ngIf="shouldDelete"
+    class="deleteTaskLayer"
+    (click)="handleDeleteTask()"
+  >
+    <img class="absolute" src="./assets/deleteIcon.svg" />
+  </div>
+
+  <div class="flex flex-col max-w-[75%] max-h-fit gap-5 break-words">
     <h2 class="font-medium text-2xl">{{ task.description }}</h2>
     <p class="font-normal text-xl">
-      Deadline: {{ task.deadline.toDate() | date : "short" }}
+      Deadline:
+      {{ task.deadline.toDate().toLocaleDateString(["pt-BR"]) }}
     </p>
   </div>
+
   <input
     class="w-6"
     type="checkbox"
     formControlName="checkbox"
-    [attr.priority]="task.priority"
     [checked]="task.isCompleted"
     (change)="handleChange()"
   />
