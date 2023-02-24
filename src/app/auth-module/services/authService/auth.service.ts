@@ -52,8 +52,8 @@ export class AuthService {
       email,
       password as string
     );
-    await this.createUserDoc(user);
     await this.uploadPhoto(profilePicFile);
+    await this.createUserDoc(user);
   }
 
   async createUserDoc(user: IUserInfo) {
