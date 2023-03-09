@@ -1,4 +1,14 @@
-.login::after {
+
+.loginForm {
+  @apply flex flex-col items-center rounded-lg bg-neutral-900 max-w-md h-fit py-5 px-10 gap-5
+}
+.loginTitle {
+  @apply text-center text-white font-montserrat text-5xl font-medium;
+
+}
+
+
+.loginTitle::after {
   content: "";
   display: block;
   width: 400px;
@@ -12,4 +22,46 @@
 }
 .ng-invalid:not(form) {
   border-left: 5px solid #a94442; /* red */
+}
+
+
+@media(max-width: '1300px') {
+
+  .loginForm {
+    @apply max-w-sm
+  }
+
+  .loginTitle::after {
+    width: 300px
+  }
+
+  .lostPasswordAndSignIn {
+    font-size: 16px;
+  }
+
+}
+
+@media(max-width: '425px') {
+
+  .loginForm {
+    max-width: 250px;
+  }
+
+  .loginTitle {
+    font-size: 36px;
+  }
+
+  .loginTitle::after {
+    width: 160px;
+  }
+
+  .lostPasswordAndSignIn {
+    font-size: 14px;
+    text-align: center;
+    gap: 10px;
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+  }
+
 }

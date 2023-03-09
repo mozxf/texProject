@@ -42,6 +42,24 @@ button[disabled] {
   animation: displayAnimation 0.7s forwards;
 }
 
+
+
+@media(max-width: '425px') {
+  .inputGroup {
+    label {
+      font-size: 18px;
+    }
+    input, select {
+      padding: 8px;
+    }
+  }
+}
+
+
+
+
+
+
 @keyframes displayAnimation {
   from {
     opacity: 0;

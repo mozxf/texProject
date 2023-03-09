@@ -3,12 +3,12 @@
 >
   <form
     #loginForm="ngForm"
-    class="flex flex-col items-center rounded-lg bg-neutral-900 w-1/4 h-fit py-5 px-10 gap-5"
+    class="loginForm"
     [formGroup]="form"
     (ngSubmit)="handleSubmit()"
   >
     <h1
-      class="login text-center text-white font-montserrat font-medium text-5xl"
+      class="loginTitle"
     >
       Login
     </h1>
